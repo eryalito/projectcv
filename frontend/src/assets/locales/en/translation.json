@@ -1,0 +1,12 @@
+{
+  "landingPageTitle": "Landing Page",
+  "openButton": "Open",
+  "settingsButton": "Settings",
+  "creditsText": "Credits",
+  "backButton": "Back",
+  "settingsTitle": "Settings",
+  "settingsKey": {
+    "language": "Language"
+  },
+  "foldersTitle": "Folders"
+}

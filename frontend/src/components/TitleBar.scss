@@ -1,0 +1,15 @@
+.title-bar {
+    background-color: lightgray;
+    /* Light gray background color */
+    padding: 10px 0;
+    /* Add some padding */
+}
+
+.title-link {
+    color: gray;
+    text-decoration: none;
+}
+
+.title-link:hover {
+    text-decoration: underline;
+}

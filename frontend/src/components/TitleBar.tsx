@@ -8,13 +8,15 @@ interface TitleBarProps {
   backButtonKey?: string;
   backButtonVisible?: boolean;
   backButtonPath?: string;
+  translateTitle?: boolean;
 }
 
 const TitleBar: React.FC<TitleBarProps> = ({
   titleKey,
   backButtonKey,
   backButtonVisible = true,
-  backButtonPath = "/"
+  backButtonPath = "/",
+  translateTitle = true,
 }) => {
   const { t } = useTranslation();
 
@@ -27,8 +29,8 @@ const TitleBar: React.FC<TitleBarProps> = ({
           </Link>
         )}
       </div>
-      <div className="col-8 d-flex justify-content-center align-items-center">
-        <h1>{t(titleKey)}</h1>
+      <div className="col-8 d-flex justify-content-center align-items-center overflow-hidden">
+        <h1>{translateTitle ? t(titleKey) : titleKey}</h1>
       </div>
       <div className="col-2"></div>
     </div>

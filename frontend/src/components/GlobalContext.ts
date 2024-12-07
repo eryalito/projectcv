@@ -5,5 +5,8 @@ export interface GlobalContextProps {
   setFolderPath: (path: string) => void;
 }
 
-const GlobalContext = React.createContext<GlobalContextProps | undefined>(undefined);
+const GlobalContext = React.createContext<GlobalContextProps>({
+  folderPath: "",
+  setFolderPath: () => {},
+});
 export default GlobalContext;

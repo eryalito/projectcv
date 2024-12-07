@@ -40,22 +40,22 @@ func (a *App) InitGitRepoIfNotExists(path string) error {
 	return nil
 }
 
-func (a *App) GetGitStatus(path string) (string, error) {
+func (a *App) GetGitStatus(path string) (git.Status, error) {
 	repo, err := git.PlainOpen(path)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	wt, err := repo.Worktree()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	status, err := wt.Status()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	fmt.Println("asd")
 	fmt.Println(status)
-	return status.String(), nil
+	return status, nil
 }

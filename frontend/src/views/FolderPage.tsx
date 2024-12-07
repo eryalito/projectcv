@@ -1,63 +1,89 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import TitleBar from '../components/TitleBar';
-import { ChooseFolder, GetGitStatus, InitGitRepoIfNotExists } from '../../wailsjs/go/main/App';
-import GlobalContext from '../components/GlobalContext';
-import { useNavigate } from "react-router";
+import { GetGitStatus } from '../../wailsjs/go/main/App';
+import { useEffect, useState } from 'react';
+import { getGitStatusCode, StatusCode } from '../components/Git';
+import './FolderPage.scss';
 
-interface BodyProps {
-    path : string | undefined;
-    onClick : () => void;
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
 }
 
-function Body(props: BodyProps) {
+interface FileStatus {
+    file: string;
+    status: StatusCode;
+}
+
+const FolderPage = () => {
     const { t } = useTranslation();
-    const path = props.path;
-    if (path == "" || path == null) {
-        return <div className="d-flex flex-column align-items-center mt-4 mb-auto">
-            <button className="btn btn-primary mb-2 custom-btn" onClick={props.onClick}>
-            {t('openButton')}
-            </button>
-        </div>
+    const navigate = useNavigate();
+    const query = useQuery();
+    const path = query.get('path');
+    if (path === null) {
+        navigate('/');
+        return <></>;
     }
+    const folderName = path ? path.split(/[/\\]/).filter(Boolean).pop() : '';
 
-    return <div className="d-flex flex-column align-items-center mt-4 mb-auto">
-
-    </div>
-    
-}
-
-function FoldersPage() {
-    let navigate = useNavigate();
-    const { t, i18n } = useTranslation();
-
-    const globalData = useContext(GlobalContext);
-
-    const handleOpenClick = async () => {
-        ChooseFolder().then((result) => {
-            if (result == "") {	// If no folder is selected
-                navigate("/");
-            } else {
-                globalData?.setFolderPath(result);
-                InitGitRepoIfNotExists(result);
-                navigate("/folder");
+    const [status, setStatus] = useState<FileStatus[]>([]);
+    useEffect(() => {
+        GetGitStatus(path).then((st) => {
+            const fileStatusList = new Array<FileStatus>();
+            for (const file in st) {
+                const fileStatus = getGitStatusCode(st[file].Staging, st[file].Worktree);
+                fileStatusList.push({
+                    file: file,
+                    status: fileStatus
+                });
             }
-
+            setStatus(fileStatusList);
         });
-    };
+    }, []);
 
     return (
-        <div className="vh-100">
-            <TitleBar
-                titleKey="foldersTitle"
-                backButtonKey="backButton"
-                backButtonVisible={true}
-                backButtonPath="/" // Specify the path for the back button
-            />
-            <Body path={globalData?.folderPath} onClick={handleOpenClick}/>
+        <div className="h-100">
+            <TitleBar titleKey={path ?? "Unknown"} translateTitle={false} backButtonKey="backButton" backButtonVisible={true} backButtonPath="/" />
+            <div className="container d-flex flex-column align-items-center mt-4">
+                <p>Path: {path}</p>
+                <div className="table-responsive w-100">
+                    <table className="table table-hover custom-table-width">
+                        <thead className="thead-dark">
+                            <tr>
+                                <th scope="col">File</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {status.map((fileStatus, index) => {
+                                let rowClass = '';
+                                switch (fileStatus.status) {
+                                    case StatusCode.Modified:
+                                        rowClass = 'bg-modified'; // light yellow
+                                        break;
+                                    case StatusCode.Added:
+                                    case StatusCode.Untracked:
+                                        rowClass = 'bg-added'; // light green
+                                        break;
+                                    case StatusCode.Deleted:
+                                        rowClass = 'bg-deleted'; // light red
+                                        break;
+                                    default:
+                                        rowClass = '';
+                                }
+                                return (
+                                    <tr key={index} className={rowClass}>
+                                        <td className='bg-inherited'>{fileStatus.file}</td>
+                                        <td className='bg-inherited'>{fileStatus.status}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 }
 
-export default FoldersPage;
+export default FolderPage;

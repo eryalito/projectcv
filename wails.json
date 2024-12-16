@@ -9,5 +9,6 @@
   "author": {
     "name": "eryalito",
     "email": "eryalito@gmail.com"
-  }
+  },
+  "icon": "build/appicon.png"
 }

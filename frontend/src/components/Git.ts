@@ -21,7 +21,7 @@ export function getGitStatusCode(staging: string, worktree: string): StatusCode 
     if (stagingChar === '?') {
         return StatusCode.Untracked;
     }
-    if ( worktreeChar === 'M') {
+    if (worktreeChar === 'M') {
         return StatusCode.Modified;
     }
     if (worktreeChar === 'A' && stagingChar === ' ') {
@@ -42,3 +42,25 @@ export function getGitStatusCode(staging: string, worktree: string): StatusCode 
     return StatusCode.Unmodified;
 }
 
+export function getGitStatusText(status: StatusCode): string {
+    switch (status) {
+        case StatusCode.Unmodified:
+            return 'git.unmodified';
+        case StatusCode.Untracked:
+            return 'git.untracked';
+        case StatusCode.Modified:
+            return 'git.modified';
+        case StatusCode.Added:
+            return 'git.added';
+        case StatusCode.Deleted:
+            return 'git.deleted';
+        case StatusCode.Renamed:
+            return 'git.renamed';
+        case StatusCode.Copied:
+            return 'git.copied';
+        case StatusCode.UpdatedButUnmerged:
+            return 'git.updatedButUnmerged';
+        default:
+            return 'git.unknown';
+    }
+}

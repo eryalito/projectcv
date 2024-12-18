@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import TitleBar from '../components/TitleBar';
 import { GetGitStatus } from '../../wailsjs/go/main/App';
 import { useEffect, useState } from 'react';
-import { getGitStatusCode, StatusCode } from '../components/Git';
+import { getGitStatusCode, StatusCode, getGitStatusText } from '../components/Git';
 import './FolderPage.scss';
 
 function useQuery() {
@@ -13,68 +13,71 @@ function useQuery() {
 interface FileStatus {
     file: string;
     status: StatusCode;
+    statusText: string;
 }
 
 const FolderPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const query = useQuery();
-    const path = query.get('path');
-    if (path === null) {
+    const queryPath = query.get('path');
+    if (queryPath === null) {
         navigate('/');
         return <></>;
     }
-    const folderName = path ? path.split(/[/\\]/).filter(Boolean).pop() : '';
+    const folderName = queryPath ? queryPath.split(/[/\\]/).filter(Boolean).pop() : '';
 
     const [status, setStatus] = useState<FileStatus[]>([]);
     useEffect(() => {
-        GetGitStatus(path).then((st) => {
+        getFolderStatus();
+    }, []);
+
+    const getFolderStatus = () => {
+        GetGitStatus(queryPath).then((st) => {
+            
             const fileStatusList = new Array<FileStatus>();
             for (const file in st) {
                 const fileStatus = getGitStatusCode(st[file].Staging, st[file].Worktree);
                 fileStatusList.push({
                     file: file,
-                    status: fileStatus
+                    status: fileStatus,
+                    statusText: t(getGitStatusText(fileStatus))
                 });
             }
             setStatus(fileStatusList);
         });
-    }, []);
+    };
 
+
+    const getRowClass = (status: StatusCode) => {
+        switch (status) {
+            case StatusCode.Modified:
+                return 'bg-modified';
+            case StatusCode.Added:
+            case StatusCode.Untracked:
+                return 'bg-added';
+            case StatusCode.Deleted:
+                return 'bg-deleted';
+            default:
+                return '';
+        }
+    };
     return (
-        <div className="h-100">
-            <TitleBar titleKey={path ?? "Unknown"} translateTitle={false} backButtonKey="backButton" backButtonVisible={true} backButtonPath="/" />
+        <div className="vh-100">
+            <TitleBar titleKey={ queryPath ? queryPath.split(/[/\\]/).filter(Boolean).pop()  : "Unknown"} translateTitle={false} backButtonKey="backButton" backButtonVisible={true} backButtonPath="/" />
             <div className="container d-flex flex-column align-items-center mt-4">
-                <p>Path: {path}</p>
-                <div className="table-responsive w-100">
+                <div className="d-flex justify-content-between align-items-center w-100 mb-3">
+                    <p className="font-weight-bold">Path: {queryPath}</p>
+                    <button className="btn btn-primary" onClick={getFolderStatus}>{t("reload")}</button>
+                </div>
+                <div className="table-responsive w-100" style={{ maxHeight: '400px', overflowY: 'auto' }}>
                     <table className="table table-hover custom-table-width">
-                        <thead className="thead-dark">
-                            <tr>
-                                <th scope="col">File</th>
-                                <th scope="col">Status</th>
-                            </tr>
-                        </thead>
                         <tbody>
                             {status.map((fileStatus, index) => {
-                                let rowClass = '';
-                                switch (fileStatus.status) {
-                                    case StatusCode.Modified:
-                                        rowClass = 'bg-modified'; // light yellow
-                                        break;
-                                    case StatusCode.Added:
-                                    case StatusCode.Untracked:
-                                        rowClass = 'bg-added'; // light green
-                                        break;
-                                    case StatusCode.Deleted:
-                                        rowClass = 'bg-deleted'; // light red
-                                        break;
-                                    default:
-                                        rowClass = '';
-                                }
                                 return (
-                                    <tr key={index} className={rowClass}>
-                                        <td className='bg-inherited'>{fileStatus.file}</td>
-                                        <td className='bg-inherited'>{fileStatus.status}</td>
+                                    <tr key={index} className={getRowClass(fileStatus.status)}>
+                                        <td className='bg-inherited'>{fileStatus.statusText}</td>
+                                        <td className='bg-inherited text-left'>{fileStatus.file}</td>
                                     </tr>
                                 );
                             })}

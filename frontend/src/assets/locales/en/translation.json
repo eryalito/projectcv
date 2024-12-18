@@ -5,8 +5,20 @@
   "creditsText": "Credits",
   "backButton": "Back",
   "settingsTitle": "Settings",
+  "reload": "Reload",
   "settingsKey": {
     "language": "Language"
+  },
+  "git": {
+    "unmodified": "Unmodified",
+    "modified": "Modified",
+    "added": "Added",
+    "deleted": "Deleted",
+    "renamed": "Renamed",
+    "copied": "Copied",
+    "updatedButUnmerged": "Updated but unmerged",
+    "untracked": "Untracked",
+    "unkown": "Unknown"
   },
   "foldersTitle": "Folders"
 }

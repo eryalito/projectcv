@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -55,7 +54,5 @@ func (a *App) GetGitStatus(path string) (git.Status, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("asd")
-	fmt.Println(status)
 	return status, nil
 }

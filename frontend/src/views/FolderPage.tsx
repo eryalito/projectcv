@@ -64,7 +64,7 @@ const FolderPage = () => {
     };
     return (
         <div className="vh-100">
-            <TitleBar titleKey={ queryPath ? queryPath.split(/[/\\]/).filter(Boolean).pop()  : "Unknown"} translateTitle={false} backButtonKey="backButton" backButtonVisible={true} backButtonPath="/" />
+            <TitleBar titleKey={ folderName ?? "Unknown"} translateTitle={false} backButtonKey="backButton" backButtonVisible={true} backButtonPath="/" />
             <div className="container d-flex flex-column align-items-center mt-4">
                 <div className="d-flex justify-content-between align-items-center w-100 mb-3">
                     <p className="font-weight-bold">Path: {queryPath}</p>

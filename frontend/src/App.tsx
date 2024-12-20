@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import LandingPage from './views/LandingPage';
 import CreditsPage from './views/CreditsPage';
 import SettingsPage from './views/SettingsPage';
@@ -18,16 +18,17 @@ const globalData = {
 };
 
 function App() {
+
     return (
         <GlobalContext.Provider value={globalData}>
-        <Router>
-            <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/settings" element={<SettingsPage />} />
-                <Route path="/credits" element={<CreditsPage />} />
-                <Route path="/folder" element={<FoldersPage />} />
-            </Routes>
-        </Router>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/settings" element={<SettingsPage />} />
+                    <Route path="/credits" element={<CreditsPage />} />
+                    <Route path="/folder" element={<FoldersPage />} />
+                </Routes>
+            </Router>
         </GlobalContext.Provider>
     );
 }

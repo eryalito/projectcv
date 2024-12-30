@@ -10,6 +10,18 @@ export function GetGitStatus(arg1) {
   return window['go']['main']['App']['GetGitStatus'](arg1);
 }
 
+export function GitAddAllFiles(arg1) {
+  return window['go']['main']['App']['GitAddAllFiles'](arg1);
+}
+
+export function GitCommit(arg1, arg2) {
+  return window['go']['main']['App']['GitCommit'](arg1, arg2);
+}
+
+export function GitLog(arg1) {
+  return window['go']['main']['App']['GitLog'](arg1);
+}
+
 export function InitGitRepoIfNotExists(arg1) {
   return window['go']['main']['App']['InitGitRepoIfNotExists'](arg1);
 }

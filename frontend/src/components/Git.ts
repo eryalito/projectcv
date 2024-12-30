@@ -10,10 +10,8 @@ export enum StatusCode {
 }
 
 export function getGitStatusCode(staging: string, worktree: string): StatusCode {
-    console.log(staging, worktree);
     const stagingChar = String.fromCharCode(parseInt(staging));
     const worktreeChar = String.fromCharCode(parseInt(worktree));
-    console.log(stagingChar, worktreeChar);
 
     if (worktreeChar === ' ' && stagingChar === ' ') {
         return StatusCode.Unmodified;

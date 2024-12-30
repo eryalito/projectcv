@@ -6,6 +6,7 @@
   "backButton": "Back",
   "settingsTitle": "Settings",
   "reload": "Reload",
+  "save_all": "Save all",
   "settingsKey": {
     "language": "Language"
   },

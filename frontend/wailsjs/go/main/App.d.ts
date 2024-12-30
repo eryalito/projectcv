@@ -6,4 +6,10 @@ export function ChooseFolder():Promise<string>;
 
 export function GetGitStatus(arg1:string):Promise<git.Status>;
 
+export function GitAddAllFiles(arg1:string):Promise<void>;
+
+export function GitCommit(arg1:string,arg2:string):Promise<void>;
+
+export function GitLog(arg1:string):Promise<Array<string>>;
+
 export function InitGitRepoIfNotExists(arg1:string):Promise<void>;

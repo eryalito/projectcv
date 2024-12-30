@@ -195,7 +195,7 @@ const FolderPage = () => {
         >
             <div className="d-flex flex-column align-items-center">
                 <h2>Versions</h2>
-                <div className="table-responsive w-100 mt-4" style={{ overflowX: 'auto' }}>
+                <div className="table-responsive w-100 mt-4" style={{ overflowX: 'auto', overflowY: 'auto', maxHeight: '400px' }}>
                     <table className="table table-hover custom-table-width">
                         <thead>
                             <tr>

@@ -29,7 +29,7 @@
     background: white;
     padding: 20px;
     border-radius: 5px;
-    width: 400px;
+    width: 75%;
     max-width: 100%;
 }
 
@@ -43,4 +43,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.mr-2 {
+    margin-right: 0.5rem;
 }

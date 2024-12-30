@@ -14,8 +14,16 @@ export function GitAddAllFiles(arg1) {
   return window['go']['main']['App']['GitAddAllFiles'](arg1);
 }
 
+export function GitCheckout(arg1, arg2) {
+  return window['go']['main']['App']['GitCheckout'](arg1, arg2);
+}
+
 export function GitCommit(arg1, arg2) {
   return window['go']['main']['App']['GitCommit'](arg1, arg2);
+}
+
+export function GitGetLastCommit(arg1) {
+  return window['go']['main']['App']['GitGetLastCommit'](arg1);
 }
 
 export function GitLog(arg1) {

@@ -7,6 +7,10 @@
   "settingsTitle": "Settings",
   "reload": "Reload",
   "save_all": "Save all",
+  "versions": "Versions",
+  "confirm": "Confirm",
+  "cancel": "Cancel",
+  "close": "Close",	
   "settingsKey": {
     "language": "Language"
   },

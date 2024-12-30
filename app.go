@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -94,29 +95,99 @@ func (a *App) GitCommit(path string, message string) error {
 	return nil
 }
 
-func (a *App) GitLog(path string) ([]string, error) {
+func (a *App) GitLog(path string) ([]object.Commit, error) {
 	repo, err := git.PlainOpen(path)
 	if err != nil {
 		return nil, err
 	}
 
-	ref, err := repo.Head()
+	commitIter, err := repo.Log(&git.LogOptions{All: true})
 	if err != nil {
 		return nil, err
 	}
 
-	commitIter, err := repo.Log(&git.LogOptions{From: ref.Hash()})
-	if err != nil {
-		return nil, err
-	}
-
-	var commits []string
+	var commits []object.Commit
 	err = commitIter.ForEach(func(c *object.Commit) error {
-		commits = append(commits, c.Message)
+		commits = append(commits, *c)
 		return nil
 	})
 	if err != nil {
 		return nil, err
 	}
 	return commits, nil
+}
+
+func (a *App) GitCheckout(path string, commitHash string) error {
+	repo, err := git.PlainOpen(path)
+	if err != nil {
+		return err
+	}
+
+	wt, err := repo.Worktree()
+	if err != nil {
+		return err
+	}
+
+	branchExists := false
+	branches, err := repo.Branches()
+	if err != nil {
+		return err
+	}
+
+	err = branches.ForEach(func(ref *plumbing.Reference) error {
+		if ref.Name().Short() == commitHash {
+			branchExists = true
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+
+	if branchExists {
+		err = wt.Checkout(&git.CheckoutOptions{
+			Branch: plumbing.NewBranchReferenceName(commitHash),
+		})
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
+	err = wt.Checkout(&git.CheckoutOptions{
+		Hash:   plumbing.NewHash(commitHash),
+		Branch: plumbing.NewBranchReferenceName(commitHash),
+		Create: true,
+		Force:  true,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *App) GitGetLastCommit(path string) (*object.Commit, error) {
+	repo, err := git.PlainOpen(path)
+	if err != nil {
+		return nil, err
+	}
+
+	commitIter, err := repo.Log(&git.LogOptions{})
+	if err != nil {
+		return nil, err
+	}
+
+	var commits []object.Commit
+	err = commitIter.ForEach(func(c *object.Commit) error {
+		commits = append(commits, *c)
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	if len(commits) == 0 {
+		return nil, nil
+	}
+	return &commits[0], nil
 }

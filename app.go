@@ -2,11 +2,19 @@ package main
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
+)
+
+const (
+	ConfigFilePath = "projectcv.config.json"
 )
 
 // App struct
@@ -190,4 +198,85 @@ func (a *App) GitGetLastCommit(path string) (*object.Commit, error) {
 		return nil, nil
 	}
 	return &commits[0], nil
+}
+
+func (a *App) SetConfig(key, value string) error {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return fmt.Errorf("could not get home directory: %v", err)
+	}
+
+	filePath := filepath.Join(homeDir, ConfigFilePath)
+
+	var data map[string]string
+
+	// Check if the file exists
+	if _, err := os.Stat(filePath); err == nil {
+		// File exists, read it
+		fileContent, err := os.ReadFile(filePath)
+		if err != nil {
+			return fmt.Errorf("could not read file: %v", err)
+		}
+
+		// Unmarshal the JSON data
+		err = json.Unmarshal(fileContent, &data)
+		if err != nil {
+			return fmt.Errorf("could not unmarshal JSON: %v", err)
+		}
+	} else {
+		// File does not exist, create a new map
+		data = make(map[string]string)
+	}
+
+	// Add or update the key-value pair
+	data[key] = value
+
+	// Marshal the data back to JSON
+	fileContent, err := json.MarshalIndent(data, "", "  ")
+	if err != nil {
+		return fmt.Errorf("could not marshal JSON: %v", err)
+	}
+
+	// Write the JSON data to the file
+	err = os.WriteFile(filePath, fileContent, 0644)
+	if err != nil {
+		return fmt.Errorf("could not write file: %v", err)
+	}
+
+	return nil
+}
+
+func (a *App) GetConfig(key string) (string, error) {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return "", fmt.Errorf("could not get home directory: %v", err)
+	}
+
+	filePath := filepath.Join(homeDir, ConfigFilePath)
+
+	// Check if the file exists
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		return "", fmt.Errorf("file does not exist")
+	}
+
+	// Read the file
+	fileContent, err := os.ReadFile(filePath)
+	if err != nil {
+		return "", fmt.Errorf("could not read file: %v", err)
+	}
+
+	// Unmarshal the JSON data
+	var data map[string]string
+	err = json.Unmarshal(fileContent, &data)
+	if err != nil {
+		return "", fmt.Errorf("could not unmarshal JSON: %v", err)
+	}
+
+	// Retrieve the value for the given key
+	value, exists := data[key]
+	if !exists {
+		return "", fmt.Errorf("key does not exist")
+	}
+
+	return value, nil
 }

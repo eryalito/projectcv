@@ -29,8 +29,8 @@ function LandingPage() {
                     <Link to="/settings" className="btn btn-secondary mb-2 custom-btn">
                         {t('settingsButton')}
                     </Link>
-                    <Link to="/credits" className="mb-2 custom-link">
-                        {t('creditsText')}
+                    <Link to="/about" className="mb-2 custom-link">
+                        {t('aboutText')}
                     </Link>
                 </div>
             </div>

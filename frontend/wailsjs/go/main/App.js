@@ -6,6 +6,10 @@ export function ChooseFolder() {
   return window['go']['main']['App']['ChooseFolder']();
 }
 
+export function GetConfig(arg1) {
+  return window['go']['main']['App']['GetConfig'](arg1);
+}
+
 export function GetGitStatus(arg1) {
   return window['go']['main']['App']['GetGitStatus'](arg1);
 }
@@ -32,4 +36,8 @@ export function GitLog(arg1) {
 
 export function InitGitRepoIfNotExists(arg1) {
   return window['go']['main']['App']['InitGitRepoIfNotExists'](arg1);
+}
+
+export function SetConfig(arg1, arg2) {
+  return window['go']['main']['App']['SetConfig'](arg1, arg2);
 }

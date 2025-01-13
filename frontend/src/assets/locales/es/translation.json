@@ -1,5 +1,36 @@
 {
-  "landingPageTitle": "Página de Inicio",
+  "appName": "ProjectCV",
+  "landingPageTitle": "ProjectCV",
   "openButton": "Abrir",
-  "creditsButton": "Créditos"
+  "settingsButton": "Ajustes",
+  "aboutText": "Acerca de",
+  "about": {
+    "pageTitle": "Acerca de ProjectCV",
+    "description": "Esta aplicación se basa en Git, basándose en él para tener un versionado consistente. Es Software Libre y de Código Abierto (FOSS). El proyecto está diseñado para ser colaborativo y accesible para todos.",
+    "checkoutText": "Echa un vistazo al proyecto"
+    
+  },
+  "backButton": "Atrás",
+  "settingsTitle": "Ajustes",
+  "reload": "Recargar",
+  "save_all": "Guardar todo",
+  "versions": "Versiones",
+  "confirm": "Confirmar",
+  "cancel": "Cancelar",
+  "close": "Cerrar",	
+  "settingsKey": {
+    "language": "Idioma"
+  },
+  "git": {
+    "unmodified": "Sin modificar",
+    "modified": "Modificado",
+    "added": "Añadido",
+    "deleted": "Eliminado",
+    "renamed": "Renombrado",
+    "copied": "Copiado",
+    "updatedButUnmerged": "Actualizado pero no fusionado",
+    "untracked": "Untracked",
+    "unkown": "Desconocido"
+  },
+  "foldersTitle": "Carpetas"
 }

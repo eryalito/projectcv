@@ -5,6 +5,8 @@ import {object} from '../models';
 
 export function ChooseFolder():Promise<string>;
 
+export function GetConfig(arg1:string):Promise<string>;
+
 export function GetGitStatus(arg1:string):Promise<git.Status>;
 
 export function GitAddAllFiles(arg1:string):Promise<void>;
@@ -18,3 +20,5 @@ export function GitGetLastCommit(arg1:string):Promise<object.Commit>;
 export function GitLog(arg1:string):Promise<Array<object.Commit>>;
 
 export function InitGitRepoIfNotExists(arg1:string):Promise<void>;
+
+export function SetConfig(arg1:string,arg2:string):Promise<void>;

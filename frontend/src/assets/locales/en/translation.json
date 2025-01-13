@@ -1,8 +1,15 @@
 {
+  "appName": "ProjectCV",
   "landingPageTitle": "ProjectCV",
   "openButton": "Open",
   "settingsButton": "Settings",
-  "creditsText": "Credits",
+  "aboutText": "About",
+  "about": {
+    "pageTitle": "About ProjectCV",
+    "description": "This application is based on Git, relying on it to have consistent versioning. It is Free and Open Source Software (FOSS). The project is designed to be collaborative and accessible to everyone.",
+    "checkoutText": "Check out the project"
+    
+  },
   "backButton": "Back",
   "settingsTitle": "Settings",
   "reload": "Reload",

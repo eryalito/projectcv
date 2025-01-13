@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import TitleBar from '../components/TitleBar';
+import { GetConfig, SetConfig } from '../../wailsjs/go/main/App';
+import { globalData } from '../App';
 
 function SettingsPage() {
   const { t, i18n } = useTranslation();
 
   const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
+    SetConfig(globalData.configKeys.LANGUAGE, lng).then(() => {
+      i18n.changeLanguage(lng);
+    }).catch((err) => {
+      console.error(err);
+    });
   };
-
 
   return (
     <div className="vh-100">

@@ -1,0 +1,57 @@
+name: Build Wails Application
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
+      - name: Install Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Build application
+        run: |
+          if [ ${{ runner.os }} == 'Windows' ]; then
+            wails build -platform windows/amd64
+          elif [ ${{ runner.os }} == 'Linux' ]; then
+            wails build -platform linux/amd64
+          elif [ ${{ runner.os }} == 'macOS' ]; then
+            wails build -platform darwin/amd64
+          fi
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wails-app-${{ matrix.os }}
+          path: build/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: wails-app-${{ matrix.os }}
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag: ${{ github.event.release.tag }}
+          files: build/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

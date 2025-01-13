@@ -33,11 +33,13 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
             wails build -platform linux/amd64 -tags webkit2_41
+            mv build/bin/projectcv build/bin/projectcv-linux-amd64
 
       - name: Build application windows      
         if: matrix.os == 'windows-latest'
         run: |
             wails build -platform windows/amd64
+            mv build/bin/projectcv.exe build/bin/projectcv-windows-amd64.exe
 
       - name: Build application macos      
         if: matrix.os == 'macos-latest'

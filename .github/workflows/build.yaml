@@ -28,7 +28,7 @@ jobs:
           if [ ${{ runner.os }} == 'Windows' ]; then
             wails build -platform windows/amd64
           elif [ ${{ runner.os }} == 'Linux' ]; then
-            wails build -platform linux/amd64
+            wails build -platform linux/amd64 -tags webkit2_41
           elif [ ${{ runner.os }} == 'macOS' ]; then
             wails build -platform darwin/amd64
           fi

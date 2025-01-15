@@ -42,6 +42,7 @@ func (a *App) ChooseFolder() (string, error) {
 func (a *App) InitGitRepoIfNotExists(path string) error {
 	_, err := git.PlainInit(path, false)
 	if err != nil {
+		fmt.Println(err)
 		if err == git.ErrRepositoryAlreadyExists {
 			return nil
 		}

@@ -97,7 +97,16 @@ func (a *App) GitCommit(path string, message string) error {
 		return err
 	}
 
-	_, err = wt.Commit(message, &git.CommitOptions{})
+	_, err = wt.Commit(message, &git.CommitOptions{
+		Author: &object.Signature{
+			Name:  "ProjectCV",
+			Email: "",
+		},
+		Committer: &object.Signature{
+			Name:  "ProjectCV",
+			Email: "",
+		},
+	})
 	if err != nil {
 		return err
 	}

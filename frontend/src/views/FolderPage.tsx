@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import TitleBar from '../components/TitleBar';
-import { GetGitStatus, GitAddAllFiles, GitCheckout, GitCommit, GitGetLastCommit, GitLog } from '../../wailsjs/go/main/App';
+import { GetGitStatus, GitAddAllFiles, GitCheckout, GitCommit, GitGetLastCommit, GitLog, InitGitRepoIfNotExists } from '../../wailsjs/go/main/App';
 import { useEffect, useState } from 'react';
 import { getGitStatusCode, StatusCode, getGitStatusText } from '../components/Git';
 import './FolderPage.scss';
@@ -45,7 +45,12 @@ const FolderPage = () => {
     const [log, setLog] = useState<Commit[]>([]);
     const [lastCommitHash, setLastCommitHash] = useState<Commit|null>(null);
     useEffect(() => {
-        loadFolderInfo();
+        InitGitRepoIfNotExists(queryPath).then(() => {
+            loadFolderInfo();
+        }).catch((err) => {
+            console.error(err);
+            alert('Failed to initialize git repository');
+        });
     }, []);
 
     const handleSaveAllClick = () => {

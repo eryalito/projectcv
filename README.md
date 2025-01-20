@@ -1,7 +1,5 @@
 # ProjectCV
 
-## About
-
 ProjectCV is a cross-platform application (Windows and Linux) designed to create and handle versions of folders.
 
 ## Download

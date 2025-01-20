@@ -1,19 +1,25 @@
-# README
+# ProjectCV
 
 ## About
 
-This is the official Wails React-TS template.
+ProjectCV is a cross-platform application (Windows and Linux) designed to create and handle versions of folders.
 
-You can configure the project by editing `wails.json`. More information about the project settings can be found
-here: https://wails.io/docs/reference/project-config
+## Download
+
+The binaries are available on the [releases page](https://github.com/eryalito/projectcv/releases).
+
+## How does it work?
+
+ProjectCV relies on [Git](https://git-scm.com/) to provide a consistent versioning. Every save is converted into a git commit, and each time the version is changed that commit is checked out, creating a new branch from there. All history is linear from that branch until another version is selected.
 
 ## Live Development
 
-To run in live development mode, run `wails dev` in the project directory. This will run a Vite development
-server that will provide very fast hot reload of your frontend changes. If you want to develop in a browser
-and have access to your Go methods, there is also a dev server that runs on http://localhost:34115. Connect
-to this in your browser, and you can call your Go code from devtools.
+This sofware is created using [wails](https://github.com/wailsapp/wails). To run in live development mode, execute the following command in the project directory:
 
-## Building
+```sh
+wails dev
+```
 
-To build a redistributable, production mode package, use `wails build`.
+## Contributing
+
+We welcome pull requests (PRs) for new features, translations, or any other improvements. If you have ideas or encounter issues, feel free to open an issue to discuss them.

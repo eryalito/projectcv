@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -101,10 +102,12 @@ func (a *App) GitCommit(path string, message string) error {
 		Author: &object.Signature{
 			Name:  "ProjectCV",
 			Email: "",
+			When:  time.Now(),
 		},
 		Committer: &object.Signature{
 			Name:  "ProjectCV",
 			Email: "",
+			When:  time.Now(),
 		},
 	})
 	if err != nil {

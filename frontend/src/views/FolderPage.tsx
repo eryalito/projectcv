@@ -54,6 +54,10 @@ const FolderPage = () => {
     }, []);
 
     const handleSaveAllClick = () => {
+        if (status.length === 0) {
+            alert('No changes to save');
+            return;
+        }
         setShowSaveModal(true);
     };
 
@@ -61,7 +65,6 @@ const FolderPage = () => {
         setVersionsModal(true);
     };
     const handleSaveConfirm = () => {
-        console.log(commitText);
         GitAddAllFiles(queryPath).then(() => {
             GitCommit(queryPath, commitText).then(() => {
                 loadFolderInfo();

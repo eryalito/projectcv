@@ -107,7 +107,6 @@ const FolderPage = () => {
 
     const getFolderLog = () => {
         GitLog(queryPath).then((log) => {
-            console.log(log)
             const list = new Array<Commit>();
             log.forEach((commit) => {
                 const hashHex = commit.Hash.map((int: number) => int.toString(16).padStart(2, '0')).join('');
@@ -127,7 +126,6 @@ const FolderPage = () => {
 
     const getLastCommit = () => {
         GitGetLastCommit(queryPath).then((commit) => {
-            console.log(commit);
             const hashHex = commit.Hash.map((int: number) => int.toString(16).padStart(2, '0')).join('');
             setLastCommitHash({
                 hash: hashHex,
@@ -157,7 +155,6 @@ const FolderPage = () => {
     };
 
     const checkoutCommit = (hash: string) => {
-        console.log(hash);
         GitCheckout(queryPath, hash).then(() => {
             loadFolderInfo();
             setVersionsModal(false);
